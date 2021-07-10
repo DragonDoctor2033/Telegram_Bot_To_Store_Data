@@ -24,7 +24,7 @@ def save_as_pdf(user_data: dict, index: str) -> str:
     pdf.drawCentredString(300, 700, title)
     pdf.setFillColorRGB(0, 0, 255)
     pdf.setFont("Courier-Bold", 24)
-    pdf.drawCentredString(290, 720, 'А я ебу, что тут писать? ')
+    pdf.drawCentredString(290, 720, '')
     pdf.line(30, 710, 550, 710)
     text = pdf.beginText(40, 680)
     text.setFont("Courier", 18)
