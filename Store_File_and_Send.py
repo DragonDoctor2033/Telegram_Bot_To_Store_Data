@@ -10,8 +10,8 @@ counter = 0
 
 def save_as_pdf(user_data: dict, index: str) -> str:
     file_name = index + "_" + user_data['Имя клиента'] + '.pdf'
-    document_title = ''
-    title = ''
+    document_title = 'Ремонт хуй знает где'
+    title = 'Пока хуй знает, где и что будет показывать.'
     text_lines = [
         'Name: ' + user_data['Имя клиента'],
         'Phone Number: ' + user_data['Номер телефона'],
@@ -24,7 +24,7 @@ def save_as_pdf(user_data: dict, index: str) -> str:
     pdf.drawCentredString(300, 700, title)
     pdf.setFillColorRGB(0, 0, 255)
     pdf.setFont("Courier-Bold", 24)
-    pdf.drawCentredString(290, 720, '')
+    pdf.drawCentredString(290, 720, 'А я ебу, что тут писать? ')
     pdf.line(30, 710, 550, 710)
     text = pdf.beginText(40, 680)
     text.setFont("Courier", 18)
