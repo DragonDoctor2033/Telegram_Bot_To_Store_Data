@@ -10,8 +10,8 @@ counter = 0
 
 def save_as_pdf(user_data: dict, index: str) -> str:
     file_name = index + "_" + user_data['Имя клиента'] + '.pdf'
-    document_title = 'Ремонт хуй знает где'
-    title = 'Пока хуй знает, где и что будет показывать.'
+    document_title = ''
+    title = ''
     text_lines = [
         'Name: ' + user_data['Имя клиента'],
         'Phone Number: ' + user_data['Номер телефона'],
