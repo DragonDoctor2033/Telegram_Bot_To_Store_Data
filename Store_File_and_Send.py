@@ -1,5 +1,4 @@
 from datetime import date
-
 import pandas as pd
 from openpyxl import load_workbook
 from reportlab.pdfgen import canvas
