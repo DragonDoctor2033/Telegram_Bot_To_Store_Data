@@ -63,20 +63,13 @@ def what_happened(update: Update, context: CallbackContext) -> None:
 def save_order(update: Update, context: CallbackContext) -> None:
     text = store_file(context.user_data)
     update.message.reply_text(text=text[:11])
-    message = f'https://api.telegram.org/bot{Token}/sendDocument?chat_id={context.user_data["chat_id"]}'
+    message = f'https://api.telegram.org/bot{Token}/sendDocument?chat_id={str(update.effective_chat.id)}'
     post(message, files={'document': open(text[11:], 'rb')})
     context.user_data.clear()
 
 
 def button(update: Update, context: CallbackContext) -> int:
     query = update.callback_query
-    print(query)
-    if '470529631' in str(query):
-        context.user_data['chat_id'] = '470529631'
-    elif '669528071' in str(query):
-        context.user_data['chat_id'] = '669528071'
-    else:
-        return ConversationHandler.END
     if query['data'] == 'Get_Device':
         query.edit_message_text('Как зовут?')
         return GET

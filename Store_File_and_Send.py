@@ -1,7 +1,7 @@
 from datetime import date
 
 import pandas as pd
-from openpyxl import load_workbook
+from openpyxl import load_workbook, Workbook
 from reportlab.pdfgen import canvas
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase import pdfmetrics
@@ -65,8 +65,3 @@ def store_file(user_data) -> str:
     index = today.strftime('%d.%m.%y.') + str(counter).zfill(2)  # Создаём номер ремонта типа "dd.mm.yy.client number"
     assigned_data_to_excel(file_name='Customers Data Base.xlsx', user_data=user_data, repair_number=index, row=last_row)
     return str(index) + save_as_pdf(user_data=user_data, index=index)
-
-
-df = pd.read_excel("Customers Data Base.xlsx")
-df_abd = df[df == '08.07.21.01']
-print(df_abd)
