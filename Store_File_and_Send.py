@@ -7,6 +7,7 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase import pdfmetrics
 from reportlab.lib import colors
 
+
 def save_as_pdf(user_data: dict, index: str) -> str:
     file_name = index + "_" + user_data['Имя клиента'] + '.pdf'
     document_title = ''
@@ -55,7 +56,7 @@ def store_file(user_data) -> str:
     last_row = sheet.max_row
     last_row_value = sheet.cell(column=1, row=last_row).value
     if today.strftime('%d.%m.%y') == last_row_value[:8]:
-        counter = int(last_row_value[9:]) + 1  # Если дата всё таже, то присваиваем последний номер +1
+        counter = int(last_row_value[9:]) + 1  # Если дата всё таже, то присваиваем последний номер + 1
     else:
         counter = 1  # Если дата изменилась, то обнуляем счётчик
     index = today.strftime('%d.%m.%y.') + str(counter).zfill(2)  # Создаём номер ремонта типа "dd.mm.yy.client number"
