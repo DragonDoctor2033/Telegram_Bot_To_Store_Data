@@ -6,8 +6,6 @@ from reportlab.pdfgen import canvas
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase import pdfmetrics
 from reportlab.lib import colors
-counter = 0
-
 
 def save_as_pdf(user_data: dict, index: str) -> str:
     file_name = index + "_" + user_data['Имя клиента'] + '.pdf'
@@ -51,17 +49,15 @@ def assigned_data_to_excel(file_name: str, user_data: dict, repair_number: str, 
 
 
 def store_file(user_data) -> str:
-    global counter
-    counter += 1
     today = date.today()
     wb = load_workbook('Customers Data Base.xlsx')
     sheet = wb.active
     last_row = sheet.max_row
     last_row_value = sheet.cell(column=1, row=last_row).value
-    if today.strftime('%d.%m.%y') != last_row_value[:8]:
-        counter = 1  # Если дата сменилась, то обнуляем счётчик
-    elif int(last_row_value[9:]) > counter:
-        counter = int(last_row_value[9:]) + 1  # Если номер ремонта того же дня больше, то увеличиваем счётчик
+    if today.strftime('%d.%m.%y') == last_row_value[:8]:
+        counter = int(last_row_value[9:]) + 1  # Если дата всё таже, то присваиваем последний номер +1
+    else:
+        counter = 1  # Если дата изменилась, то обнуляем счётчик
     index = today.strftime('%d.%m.%y.') + str(counter).zfill(2)  # Создаём номер ремонта типа "dd.mm.yy.client number"
     assigned_data_to_excel(file_name='Customers Data Base.xlsx', user_data=user_data, repair_number=index, row=last_row)
     return str(index) + save_as_pdf(user_data=user_data, index=index)
