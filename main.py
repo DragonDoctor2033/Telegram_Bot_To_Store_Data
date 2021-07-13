@@ -63,7 +63,7 @@ def what_happened(update: Update, context: CallbackContext) -> None:
 def save_order(update: Update, context: CallbackContext) -> None:
     text = store_file(context.user_data)
     update.message.reply_text(text=text[:11])
-    message = f'https://api.telegram.org/bot{Token}/sendDocument?chat_id={str(update.effective_chat.id)}'
+    message = f'https://api.telegram.org/bot{Token}/sendDocument?chat_id={update.effective_chat.id}'
     post(message, files={'document': open(text[11:], 'rb')})
     context.user_data.clear()
 
