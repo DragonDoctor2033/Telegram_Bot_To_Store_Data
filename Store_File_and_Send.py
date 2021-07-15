@@ -1,7 +1,6 @@
 from datetime import date
 
-import pandas as pd
-from openpyxl import load_workbook, Workbook
+from openpyxl import load_workbook
 from reportlab.pdfgen import canvas
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase import pdfmetrics
