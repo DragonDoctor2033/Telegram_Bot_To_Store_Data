@@ -59,4 +59,8 @@ def store_file(user_data) -> str:
         counter = 1  # Если дата изменилась, то обнуляем счётчик
     index = today.strftime('%d.%m.%y.') + str(counter).zfill(2)  # Создаём номер ремонта типа "dd.mm.yy.client number"
     assigned_data_to_excel(file_name='Excel_And_Pdf/Customers Data Base.xlsx', user_data=user_data, repair_number=index, row=last_row)
+<<<<<<< HEAD
     return str(index) + save_as_pdf(user_data=user_data, index=index)
+=======
+    return str(index) + save_as_pdf(user_data=user_data, index=index)
+>>>>>>> 875994fa68c16eab8ff63b3ddb7fcef137b12de9

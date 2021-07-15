@@ -12,11 +12,11 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 
-GET, DATA, PHONE_NUMBER, ISSUE, WHICH_ONE, CORRECT_INFO = range(6)
+GET, DATA, PHONE_NUMBER, ISSUE, WHICH_ONE, CORRECT_INFO, REPAIR_ID = range(7)
 
 
 def facts_to_str(user_data) -> str:
-    facts = [f'{key} - {value}' for key, value in user_data.items()][1:]
+    facts = [f'{key} - {value}' for key, value in user_data.items()]
     return "\n".join(facts).join(['\n', '\n'])
 
 
@@ -64,7 +64,7 @@ def save_order(update: Update, context: CallbackContext) -> None:
     text = store_file(context.user_data)
     update.message.reply_text(text=text[:11])
     message = f'https://api.telegram.org/bot{Token}/sendDocument?chat_id={update.effective_chat.id}'
-    post(message, files={'document': open(text[11:], 'rb')})
+    post(message, files={'document': open('Excel_And_Pdf/PDF/' + text[11:], 'rb')})
     context.user_data.clear()
 
 
@@ -73,8 +73,9 @@ def button(update: Update, context: CallbackContext) -> int:
     if query['data'] == 'Get_Device':
         query.edit_message_text('Как зовут?')
         return GET
-    # if query['data'] == 'Return_Device':
-    #     query.edit_message_text('Номер ремонта:')
+    if query['data'] == 'Return_Device':
+        query.edit_message_text('Номер ремонта:')
+        return REPAIR_ID
 
 
 def category_mistake(update: Update, context: CallbackContext) -> int:
@@ -109,6 +110,9 @@ def main(user_limit: list) -> None:
             ISSUE: [
                 MessageHandler(Filters.text, what_happened)
             ],
+            REPAIR_ID: [
+                MessageHandler(Filters.text, what_happened)
+            ]
         },
         fallbacks=[CommandHandler('start', start, Filters.user(user_limit))]
     )
