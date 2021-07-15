@@ -49,7 +49,8 @@ def assigned_data_to_excel(file_name: str, user_data: dict, repair_number: str, 
 
 def store_file(user_data) -> str:
     today = date.today()
-    wb = load_workbook('Excel_And_Pdf/Customers Data Base.xlsx')
+    file_name = 'Excel_And_Pdf/Customers Data Base.xlsx'
+    wb = load_workbook(file_name)
     sheet = wb.active
     last_row = sheet.max_row
     last_row_value = sheet.cell(column=1, row=last_row).value
@@ -58,9 +59,5 @@ def store_file(user_data) -> str:
     else:
         counter = 1  # Если дата изменилась, то обнуляем счётчик
     index = today.strftime('%d.%m.%y.') + str(counter).zfill(2)  # Создаём номер ремонта типа "dd.mm.yy.client number"
-    assigned_data_to_excel(file_name='Excel_And_Pdf/Customers Data Base.xlsx', user_data=user_data, repair_number=index, row=last_row)
-<<<<<<< HEAD
+    assigned_data_to_excel(file_name=file_name, user_data=user_data, repair_number=index, row=last_row)
     return str(index) + save_as_pdf(user_data=user_data, index=index)
-=======
-    return str(index) + save_as_pdf(user_data=user_data, index=index)
->>>>>>> 875994fa68c16eab8ff63b3ddb7fcef137b12de9

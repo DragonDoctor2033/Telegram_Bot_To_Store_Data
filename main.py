@@ -12,7 +12,7 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 
-GET, DATA, PHONE_NUMBER, ISSUE, WHICH_ONE, CORRECT_INFO, REPAIR_ID = range(7)
+GET, DATA, PHONE_NUMBER, ISSUE, WHICH_ONE, CORRECT_INFO, CUSTOMER_NAME = range(7)
 
 
 def facts_to_str(user_data) -> str:
@@ -24,7 +24,7 @@ def start(update: Update, context: CallbackContext) -> int:
     keyboard = [
         [
             InlineKeyboardButton('Приём.', callback_data='Get_Device'),
-            # InlineKeyboardButton('Выдача.', callback_data='Return_Device')
+            InlineKeyboardButton('Выдача.', callback_data='Return_Device')
         ]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
@@ -72,10 +72,9 @@ def button(update: Update, context: CallbackContext) -> int:
     query = update.callback_query
     if query['data'] == 'Get_Device':
         query.edit_message_text('Как зовут?')
-        return GET
     if query['data'] == 'Return_Device':
         query.edit_message_text('Номер ремонта:')
-        return REPAIR_ID
+    return GET
 
 
 def category_mistake(update: Update, context: CallbackContext) -> int:
@@ -83,6 +82,11 @@ def category_mistake(update: Update, context: CallbackContext) -> int:
     category = update.message.text
     update.message.reply_text(f'Понял. Ошибка в {category}. Можешь исправить.')
     return CORRECT_INFO
+
+
+def search_repair(update: Update, context: CallbackContext) -> str:
+    print(update.message.text)
+    return ConversationHandler.END
 
 
 def correction_info(update: Update, context: CallbackContext) -> int:
@@ -99,7 +103,8 @@ def main(user_limit: list) -> None:
         entry_points=[CommandHandler('start', start, Filters.user(user_limit))],
         states={
             GET: [
-                MessageHandler(Filters.text, customer_name),
+                MessageHandler(Filters.regex(r'\d\d.\d\d.\d\d.\d\d'), search_repair),
+                MessageHandler(Filters.text, customer_name)
             ],
             DATA: [
                 add(CallbackQueryHandler(button))
@@ -110,9 +115,6 @@ def main(user_limit: list) -> None:
             ISSUE: [
                 MessageHandler(Filters.text, what_happened)
             ],
-            REPAIR_ID: [
-                MessageHandler(Filters.text, what_happened)
-            ]
         },
         fallbacks=[CommandHandler('start', start, Filters.user(user_limit))]
     )
