@@ -1,6 +1,5 @@
 from datetime import date
-
-from openpyxl import load_workbook
+from openpyxl import load_workbook, Workbook
 from reportlab.pdfgen import canvas
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase import pdfmetrics
@@ -16,7 +15,7 @@ def save_as_pdf(user_data: dict, index: str) -> str:
         'Phone Number: ' + user_data['Номер телефона'],
         'Issue: ' + user_data['Поломка']
     ]
-    pdf = canvas.Canvas(file_name)
+    pdf = canvas.Canvas('Excel_And_Pdf/PDF/' + file_name)
     pdf.setTitle(document_title)
     pdfmetrics.registerFont(TTFont('abc', 'VeraBI.ttf'))
     pdf.setFont('abc', 36)
@@ -45,12 +44,12 @@ def assigned_data_to_excel(file_name: str, user_data: dict, repair_number: str, 
     sheet["B" + str(row + 1)] = user_data['Имя клиента']
     sheet["C" + str(row + 1)] = user_data['Номер телефона']
     sheet["D" + str(row + 1)] = user_data['Поломка']
-    wb.save('Customers Data Base.xlsx')
+    wb.save(file_name)
 
 
 def store_file(user_data) -> str:
     today = date.today()
-    wb = load_workbook('Customers Data Base.xlsx')
+    wb = load_workbook('Excel_And_Pdf/Customers Data Base.xlsx')
     sheet = wb.active
     last_row = sheet.max_row
     last_row_value = sheet.cell(column=1, row=last_row).value
@@ -59,5 +58,5 @@ def store_file(user_data) -> str:
     else:
         counter = 1  # Если дата изменилась, то обнуляем счётчик
     index = today.strftime('%d.%m.%y.') + str(counter).zfill(2)  # Создаём номер ремонта типа "dd.mm.yy.client number"
-    assigned_data_to_excel(file_name='Customers Data Base.xlsx', user_data=user_data, repair_number=index, row=last_row)
+    assigned_data_to_excel(file_name='Excel_And_Pdf/Customers Data Base.xlsx', user_data=user_data, repair_number=index, row=last_row)
     return str(index) + save_as_pdf(user_data=user_data, index=index)
