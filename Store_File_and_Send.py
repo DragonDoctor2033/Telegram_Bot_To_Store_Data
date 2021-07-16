@@ -81,10 +81,10 @@ def save_data_to_another_table(repair_number: str) -> bool:
     Done_Repair = wb['Done']
     max_row = Done_Repair.max_row
     for row_number in range(1, len(In_Progress['A'])):
-        if In_Progress["A"][row_number].value == repair_number:
-            value_trans = In_Progress[row_number + 1][1:]
+        if In_Progress["A"][row_number].value == repair_number:  # Проверяем, есть ли такой ремонт в таблице
+            value_trans = In_Progress[row_number + 1][1:]  # Если да, то присваиваем значение и строки
             break
-    In_Progress.delete_rows(row_number + 1, 1)
+    In_Progress.delete_rows(row_number + 1, 1)  # Удаляем строку из In_Progress
     wb.save(file_name)
     assignedDataToExcel(file_name, user_data=value_trans, repair_number=repair_number, row=max_row, done=True)
     return True
