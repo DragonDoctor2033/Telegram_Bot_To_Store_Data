@@ -71,6 +71,8 @@ def store_file(user_data) -> str:
     assignedDataToExcel(file_name, user_data=user_data, repair_number=index, row=last_row, done=False)
     return str(index) + save_as_pdf(user_data=user_data, index=index)
 
+# TODO: Сделать файл в Google Drive, чтобы в него можно было писать и бот подхватывал это.
+
 
 def save_data_to_another_table(repair_number: str) -> bool:
     global row_number, value_trans

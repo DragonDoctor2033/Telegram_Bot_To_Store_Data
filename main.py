@@ -99,7 +99,7 @@ def correction_info(update: Update, context: CallbackContext) -> int:
 
 def main(user_limit: list) -> None:
     updater = Updater(Token)
-    add = updater.dispatcher.add_handler
+    add = updater.dispatcher.add_handler  # TODO: Если ввёл не значение dd.dd.dd.dd - выдать ошибку
     gather_info_customer = ConversationHandler(
         entry_points=[CommandHandler('start', start, Filters.user(user_limit))],
         states={
@@ -131,8 +131,8 @@ def main(user_limit: list) -> None:
         },
         fallbacks=[CommandHandler('mistake', mistake_was_made, Filters.user(user_limit))]
     )
-    add(CommandHandler('save', save_order, Filters.user(user_limit)))
-    add(gather_info_customer)
+    add(CommandHandler('save', save_order, Filters.user(user_limit)))  # TODO: Если просто ввёл рандомный текст
+    add(gather_info_customer)                                           # выдать ошибку
     add(mistake_handler)
     updater.start_polling()
     updater.idle()
