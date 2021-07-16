@@ -39,7 +39,7 @@ def save_as_pdf(user_data: dict, index: str) -> str:
 def assignedDataToExcel(file_name_excel: str, user_data, repair_number: str, row: int, done: bool) -> None:
     """
     Задаём в таблицу In_Progress значения по строке + 1 - если done == False
-    Задаём в таблицу Done значения из In_Progress - если dne == True
+    Задаём в таблицу Done значения из In_Progress - если done == True
     """
     wb = load_workbook(file_name_excel)
     In_Progress_Table = wb['In_Progress']
@@ -75,16 +75,14 @@ def store_file(user_data) -> str:
 
 
 def save_data_to_another_table(repair_number: str) -> bool:
-    global row_number, value_trans
     wb = load_workbook(file_name)
     In_Progress = wb['In_Progress']
     Done_Repair = wb['Done']
-    max_row = Done_Repair.max_row
     for row_number in range(1, len(In_Progress['A'])):
         if In_Progress["A"][row_number].value == repair_number:  # Проверяем, есть ли такой ремонт в таблице
-            value_trans = In_Progress[row_number + 1][1:]  # Если да, то присваиваем значение и строки
+            assignedDataToExcel(file_name, user_data=In_Progress[row_number + 1][1:], repair_number=repair_number,
+                                row=Done_Repair.max_row, done=True)
+            In_Progress.delete_rows(row_number + 1, 1)  # Удаляем строку из In_Progress
+            wb.save(file_name)
             break
-    In_Progress.delete_rows(row_number + 1, 1)  # Удаляем строку из In_Progress
-    wb.save(file_name)
-    assignedDataToExcel(file_name, user_data=value_trans, repair_number=repair_number, row=max_row, done=True)
     return True
