@@ -131,13 +131,13 @@ def main(user_limit: list) -> None:
         },
         fallbacks=[CommandHandler('mistake', mistake_was_made, Filters.user(user_limit))]
     )
-    add(CommandHandler('save', save_order, Filters.user(user_limit)))  # TODO: Если просто ввёл рандомный текст
-    add(gather_info_customer)                                           # выдать ошибку
+    add(CommandHandler('save', save_order, Filters.user(user_limit)))
+    add(gather_info_customer)  # TODO: Если просто ввёл рандомный текст выдать ошибку
     add(mistake_handler)
     updater.start_polling()
     updater.idle()
 
 
 if __name__ == '__main__':
-    user_list = [669528071, 470529631]
+    user_list = [669528071, 470529631]  # TODO: Собрать Chat_ID и добавить
     main(user_list)
