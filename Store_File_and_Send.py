@@ -54,12 +54,12 @@ def assignedDataToExcel(file_name_excel: str, user_data, repair_number: str, row
         Repair_Done["B" + str(row + 1)] = user_data[0].value
         Repair_Done["C" + str(row + 1)] = user_data[1].value
         Repair_Done["D" + str(row + 1)] = user_data[2].value
-    wb.save(file_name_excel)
+    wb.save(file_name)
 
 
 def store_file(user_data) -> str:
     today = date.today()
-    wb = load_workbook(file_name)
+    wb = load_workbook('Excel_And_Pdf/Customers Data Base.xlsx')
     sheet = wb.active
     last_row = sheet.max_row
     last_row_value = sheet.cell(column=1, row=last_row).value
