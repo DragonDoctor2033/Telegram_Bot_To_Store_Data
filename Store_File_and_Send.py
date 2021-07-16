@@ -9,7 +9,7 @@ file_name = 'Excel_And_Pdf/Customers Data Base.xlsx'
 
 
 def save_as_pdf(user_data: dict, index: str) -> str:
-    file_name = index + "_" + user_data['Имя клиента'] + '.pdf'
+    file_name_pdf = index + "_" + user_data['Имя клиента'] + '.pdf'
     document_title = ''
     title = ''
     text_lines = [
@@ -17,7 +17,7 @@ def save_as_pdf(user_data: dict, index: str) -> str:
         'Phone Number: ' + user_data['Номер телефона'],
         'Issue: ' + user_data['Поломка']
     ]
-    pdf = canvas.Canvas('Excel_And_Pdf/PDF/' + file_name)
+    pdf = canvas.Canvas('Excel_And_Pdf/PDF/' + file_name_pdf)
     pdf.setTitle(document_title)
     pdfmetrics.registerFont(TTFont('abc', 'VeraBI.ttf'))
     pdf.setFont('abc', 36)
@@ -33,7 +33,7 @@ def save_as_pdf(user_data: dict, index: str) -> str:
         text.textLine(line)
     pdf.drawText(text)
     pdf.save()
-    return file_name
+    return file_name_pdf
 
 
 def assignedDataToExcel(file_name_excel: str, user_data, repair_number: str, row: int, done: bool) -> None:
