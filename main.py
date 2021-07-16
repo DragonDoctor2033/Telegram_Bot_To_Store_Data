@@ -4,7 +4,7 @@ from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, Callback
 from Token_BOT_SQL import Token
 import logging
 from requests import post
-from Store_File_and_Send import store_file
+from Store_File_and_Send import store_file, save_data_to_another_table
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
@@ -12,7 +12,7 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 
-GET, DATA, PHONE_NUMBER, ISSUE, WHICH_ONE, CORRECT_INFO = range(6)
+GET, DATA, PHONE_NUMBER, ISSUE, WHICH_ONE, CORRECT_INFO, CUSTOMER_NAME = range(7)
 
 
 def facts_to_str(user_data) -> str:
@@ -24,7 +24,7 @@ def start(update: Update, context: CallbackContext) -> int:
     keyboard = [
         [
             InlineKeyboardButton('Приём.', callback_data='Get_Device'),
-            # InlineKeyboardButton('Выдача.', callback_data='Return_Device')
+            InlineKeyboardButton('Выдача.', callback_data='Return_Device')
         ]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
@@ -72,9 +72,9 @@ def button(update: Update, context: CallbackContext) -> int:
     query = update.callback_query
     if query['data'] == 'Get_Device':
         query.edit_message_text('Как зовут?')
-        return GET
-    # if query['data'] == 'Return_Device':
-    #     query.edit_message_text('Номер ремонта:')
+    if query['data'] == 'Return_Device':
+        query.edit_message_text('Номер ремонта:')
+    return GET
 
 
 def category_mistake(update: Update, context: CallbackContext) -> int:
@@ -82,6 +82,12 @@ def category_mistake(update: Update, context: CallbackContext) -> int:
     category = update.message.text
     update.message.reply_text(f'Понял. Ошибка в {category}. Можешь исправить.')
     return CORRECT_INFO
+
+
+def search_repair(update: Update, context: CallbackContext) -> str:
+    if save_data_to_another_table(update.message.text):
+        update.message.reply_text("Спасибо. Ремонт был перемещён в завершённые.")
+    return ConversationHandler.END
 
 
 def correction_info(update: Update, context: CallbackContext) -> int:
@@ -98,7 +104,8 @@ def main(user_limit: list) -> None:
         entry_points=[CommandHandler('start', start, Filters.user(user_limit))],
         states={
             GET: [
-                MessageHandler(Filters.text, customer_name),
+                MessageHandler(Filters.regex(r'\d\d.\d\d.\d\d.\d\d'), search_repair),
+                MessageHandler(Filters.text, customer_name)
             ],
             DATA: [
                 add(CallbackQueryHandler(button))
