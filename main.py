@@ -4,7 +4,7 @@ from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, Callback
 from Token_BOT_SQL import Token
 import logging
 from requests import post
-from Store_File_and_Send import store_file
+from Store_File_and_Send import store_file, save_data_to_another_table
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
@@ -85,7 +85,8 @@ def category_mistake(update: Update, context: CallbackContext) -> int:
 
 
 def search_repair(update: Update, context: CallbackContext) -> str:
-    print(update.message.text)
+    if save_data_to_another_table(update.message.text):
+        update.message.reply_text("Спасибо. Ремонт был перемещён в завершённые.")
     return ConversationHandler.END
 
 
