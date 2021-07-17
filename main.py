@@ -8,7 +8,7 @@ from Store_File_and_Send import store_file, save_data_to_another_table
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
-)
+)  # TODO: Собирать логи о том, кто запустил бота и сохранять в отдельный файл
 
 logger = logging.getLogger(__name__)
 

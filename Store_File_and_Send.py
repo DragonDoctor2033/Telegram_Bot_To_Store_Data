@@ -7,6 +7,8 @@ from reportlab.lib import colors
 
 file_name = 'Excel_And_Pdf/Customers Data Base.xlsx'
 
+# TODO: Получить пример PDF'a и сконифгурировать.
+
 
 def save_as_pdf(user_data: dict, index: str) -> str:
     file_name_pdf = index + "_" + user_data['Имя клиента'] + '.pdf'
@@ -36,12 +38,12 @@ def save_as_pdf(user_data: dict, index: str) -> str:
     return file_name_pdf
 
 
-def assignedDataToExcel(file_name_excel: str, user_data, repair_number: str, row: int, done: bool) -> None:
+def assignedDataToExcel(user_data, repair_number: str, row: int, done: bool) -> None:
     """
     Задаём в таблицу In_Progress значения по строке + 1 - если done == False
     Задаём в таблицу Done значения из In_Progress - если done == True
     """
-    wb = load_workbook(file_name_excel)
+    wb = load_workbook(file_name)
     In_Progress_Table = wb['In_Progress']
     Repair_Done = wb['Done']
     if not done:
@@ -68,7 +70,7 @@ def store_file(user_data) -> str:
     else:
         counter = 1  # Если дата изменилась, то обнуляем счётчик
     index = today.strftime('%d.%m.%y.') + str(counter).zfill(2)  # Создаём номер ремонта типа "dd.mm.yy.client number"
-    assignedDataToExcel(file_name, user_data=user_data, repair_number=index, row=last_row, done=False)
+    assignedDataToExcel(user_data=user_data, repair_number=index, row=last_row, done=False)
     return str(index) + save_as_pdf(user_data=user_data, index=index)
 
 # TODO: Сделать файл в Google Drive, чтобы в него можно было писать и бот подхватывал это.
@@ -80,7 +82,7 @@ def save_data_to_another_table(repair_number: str) -> bool:
     Done_Repair = wb['Done']
     for row_number in range(1, len(In_Progress['A'])):
         if In_Progress["A"][row_number].value == repair_number:  # Проверяем, есть ли такой ремонт в таблице
-            assignedDataToExcel(file_name, user_data=In_Progress[row_number + 1][1:], repair_number=repair_number,
+            assignedDataToExcel(user_data=In_Progress[row_number + 1][1:], repair_number=repair_number,
                                 row=Done_Repair.max_row, done=True)
             In_Progress.delete_rows(row_number + 1, 1)  # Удаляем строку из In_Progress
             wb.save(file_name)
