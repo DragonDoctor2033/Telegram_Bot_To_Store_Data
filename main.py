@@ -139,5 +139,5 @@ def main(user_limit: list) -> None:
 
 
 if __name__ == '__main__':
-    user_list = [669528071, 470529631]
+    user_list = [Your_List_Chat_ID]
     main(user_list)
