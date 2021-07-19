@@ -3,7 +3,6 @@ from telegram.ext import Updater, CommandHandler, CallbackQueryHandler, Callback
     ConversationHandler
 from Token_BOT_SQL import Token
 import logging
-from requests import post
 from Store_File_and_Send import store_file, save_data_to_another_table
 
 logging.basicConfig(
@@ -62,15 +61,15 @@ def what_happened(update: Update, context: CallbackContext) -> None:
 
 def save_order(update: Update, context: CallbackContext) -> None:
     text = store_file(context.user_data)
-    print(text)
     update.message.reply_text(text=text[:8])
-    message = f'https://api.telegram.org/bot{Token}/sendDocument?chat_id={update.effective_chat.id}'
-    post(message, files={'document': open('Excel_And_Pdf/PDF/' + text, 'rb')})
+    document = open('Excel_And_Pdf/PDF/' + text, 'rb')
+    update.message.reply_document(document=document)
     context.user_data.clear()
 
 
 def button(update: Update, context: CallbackContext) -> int:
     query = update.callback_query
+    print(update.effective_chat.id)
     context.user_data['Имя Сотрудника'] = update.effective_chat.id
     if query['data'] == 'Get_Device':
         query.edit_message_text('Как зовут?')

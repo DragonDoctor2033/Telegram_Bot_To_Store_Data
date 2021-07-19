@@ -9,20 +9,6 @@ from docx import Document
 file_name_excel = 'Excel_And_Pdf/Customers Data Base.xlsx'
 
 
-# TODO: Получить пример PDF'a, сконифгурировать шаблон и его пересохранять.
-
-
-# def save_as_pdf(user_data: dict, index: str) -> str:
-#    file_name_pdf = index + "_" + user_data['Имя клиента'] + '.pdf'
-#    text_lines = [
-#        'Name: ' + user_data['Имя клиента'],
-#        'Phone Number: ' + user_data['Номер телефона'],
-#        'Issue: ' + user_data['Поломка']
-#    ]
-#    pdf = canvas.Canvas('Excel_And_Pdf/PDF/' + file_name_pdf)
-#    return file_name_pdf
-
-
 def assignedDataToExcel(user_data, repair_number: str, row: int, done: bool) -> None:
     """
     Задаём в таблицу In_Progress значения по строке + 1 - если done == False
