@@ -12,7 +12,7 @@ file_name_excel = 'Excel_And_Pdf/Customers Data Base.xlsx'
 # TODO: Получить пример PDF'a, сконифгурировать шаблон и его пересохранять.
 
 
-#def save_as_pdf(user_data: dict, index: str) -> str:
+# def save_as_pdf(user_data: dict, index: str) -> str:
 #    file_name_pdf = index + "_" + user_data['Имя клиента'] + '.pdf'
 #    text_lines = [
 #        'Name: ' + user_data['Имя клиента'],
@@ -50,13 +50,13 @@ def store_file(user_data) -> str:
     sheet = wb.active
     last_row = sheet.max_row
     last_row_value = sheet.cell(column=1, row=last_row).value
-    if today.strftime('%d%m%y') == last_row_value[:6]:
+    if today.strftime('%y%d%m') == last_row_value[:6]:
         counter = int(last_row_value[6:]) + 1  # Если дата всё таже, то присваиваем последний номер + 1
     else:
         counter = 1  # Если дата изменилась, то обнуляем счётчик
-    repair_num = today.strftime('%d%m%y') + str(counter).zfill(2)  # Создаём номер ремонта
+    repair_num = today.strftime('%y%d%m') + str(counter).zfill(2)  # Создаём номер ремонта
     assignedDataToExcel(user_data=user_data, repair_number=repair_num, row=last_row, done=False)
-    return create_word(repair_num, user_data['Имя клиента'], user_data['Поломка'])
+    return create_word(repair_num=repair_num, user_data=user_data)
 
 
 # TODO: Сделать файл в Google Drive, чтобы в него можно было писать и бот подхватывал это.
@@ -76,16 +76,21 @@ def save_data_to_another_table(repair_number: str) -> bool:
     return True
 
 
-def create_word(repair_num: str, customer_name: str, customer_problem: str) -> str:
+def create_word(repair_num: str, user_data: dict) -> str:
     test = Document('Template_Customer.docx')
-    file_name_doc = repair_num + "_" + customer_name + '.docx'
+    file_name_doc = repair_num + "_" + user_data['Имя клиента'] + '.docx'
+    users_dict = {
+            470529631: ' Anatoly Tarakanovskiy',
+            669528071: ' Gleb Kuristik'
+    }
     dict_customer = {
         1: f'Remondi vastuvõtmise kviitung nr {repair_num}, kuupäev {repair_num[:-2]}',
-        2: f'{customer_name}\t\t\t(Eesnimi, perekonnanimi, ID)',
-        6: f'{customer_problem}'
+        2: f'{user_data["Имя клиента"]}\t\t\t(Eesnimi, perekonnanimi, ID)',
+        6: f'{user_data["Поломка"]}',
+        9: users_dict[user_data['Имя Сотрудника']]
     }
     for table_num in [0, 2]:
-        for row in [1, 2, 6]:
+        for row in [1, 2, 6, 9]:
             test.tables[table_num].cell(row, 2).paragraphs[0].add_run(dict_customer[row]).bold = True
     test.save('Excel_And_Pdf/PDF/' + file_name_doc)
     return file_name_doc

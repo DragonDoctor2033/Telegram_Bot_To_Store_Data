@@ -16,7 +16,7 @@ GET, DATA, PHONE_NUMBER, ISSUE, WHICH_ONE, CORRECT_INFO, CUSTOMER_NAME = range(7
 
 
 def facts_to_str(user_data) -> str:
-    facts = [f'{key} - {value}' for key, value in user_data.items()]
+    facts = [f'{key} - {value}' for key, value in user_data.items()][1:]
     return "\n".join(facts).join(['\n', '\n'])
 
 
@@ -71,6 +71,7 @@ def save_order(update: Update, context: CallbackContext) -> None:
 
 def button(update: Update, context: CallbackContext) -> int:
     query = update.callback_query
+    context.user_data['Имя Сотрудника'] = update.effective_chat.id
     if query['data'] == 'Get_Device':
         query.edit_message_text('Как зовут?')
     if query['data'] == 'Return_Device':
