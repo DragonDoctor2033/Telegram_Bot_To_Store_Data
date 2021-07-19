@@ -63,7 +63,7 @@ def what_happened(update: Update, context: CallbackContext) -> None:
 def save_order(update: Update, context: CallbackContext) -> None:
     text = store_file(context.user_data)
     print(text)
-    update.message.reply_text(text=text[:11])
+    update.message.reply_text(text=text[:8])
     message = f'https://api.telegram.org/bot{Token}/sendDocument?chat_id={update.effective_chat.id}'
     post(message, files={'document': open('Excel_And_Pdf/PDF/' + text, 'rb')})
     context.user_data.clear()
@@ -105,7 +105,7 @@ def main(user_limit: list) -> None:
         entry_points=[CommandHandler('start', start, Filters.user(user_limit))],
         states={
             GET: [
-                MessageHandler(Filters.regex(r'\d\d.\d\d.\d\d.\d\d'), search_repair),
+                MessageHandler(Filters.regex(r'\d\d\d\d\d\d\d\d'), search_repair),
                 MessageHandler(Filters.text, customer_name)
             ],
             DATA: [

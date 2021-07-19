@@ -50,13 +50,13 @@ def store_file(user_data) -> str:
     sheet = wb.active
     last_row = sheet.max_row
     last_row_value = sheet.cell(column=1, row=last_row).value
-    if today.strftime('%d.%m.%y') == last_row_value[:8]:
-        counter = int(last_row_value[9:]) + 1  # Если дата всё таже, то присваиваем последний номер + 1
+    if today.strftime('%d%m%y') == last_row_value[:6]:
+        counter = int(last_row_value[6:]) + 1  # Если дата всё таже, то присваиваем последний номер + 1
     else:
         counter = 1  # Если дата изменилась, то обнуляем счётчик
-    repair_num = today.strftime('%d.%m.%y.') + str(counter).zfill(2)  # Создаём номер ремонта
+    repair_num = today.strftime('%d%m%y') + str(counter).zfill(2)  # Создаём номер ремонта
     assignedDataToExcel(user_data=user_data, repair_number=repair_num, row=last_row, done=False)
-    return create_word(user_data['Имя клиента'], repair_num, user_data['Поломка'])
+    return create_word(repair_num, user_data['Имя клиента'], user_data['Поломка'])
 
 
 # TODO: Сделать файл в Google Drive, чтобы в него можно было писать и бот подхватывал это.
@@ -80,7 +80,7 @@ def create_word(repair_num: str, customer_name: str, customer_problem: str) -> s
     test = Document('Template_Customer.docx')
     file_name_doc = repair_num + "_" + customer_name + '.docx'
     dict_customer = {
-        1: f'Remondi vastuvõtmise kviitung nr {repair_num}, kuupäev {repair_num[:-3]}',
+        1: f'Remondi vastuvõtmise kviitung nr {repair_num}, kuupäev {repair_num[:-2]}',
         2: f'{customer_name}\t\t\t(Eesnimi, perekonnanimi, ID)',
         6: f'{customer_problem}'
     }
