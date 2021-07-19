@@ -62,8 +62,7 @@ def what_happened(update: Update, context: CallbackContext) -> None:
 def save_order(update: Update, context: CallbackContext) -> None:
     text = store_file(context.user_data)
     update.message.reply_text(text=text[:8])
-    document = open('Excel_And_Pdf/PDF/' + text, 'rb')
-    update.message.reply_document(document=document)
+    update.message.reply_document(document=open('Excel_And_Pdf/PDF/' + text, 'rb'))
     context.user_data.clear()
 
 
