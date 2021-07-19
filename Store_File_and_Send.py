@@ -1,9 +1,5 @@
 from datetime import date
 from openpyxl import load_workbook
-from reportlab.pdfgen import canvas
-from reportlab.pdfbase.ttfonts import TTFont
-from reportlab.pdfbase import pdfmetrics
-from reportlab.lib import colors
 from docx import Document
 
 file_name_excel = 'Excel_And_Pdf/Customers Data Base.xlsx'

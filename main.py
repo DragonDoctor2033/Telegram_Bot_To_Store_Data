@@ -45,7 +45,7 @@ def phone_number(update: Update, context: CallbackContext) -> int:
 
 def mistake_was_made(update: Update, context: CallbackContext) -> int:
     keyboard = [
-            ['Имя клиента', 'Номер телефона', 'Поломка']
+        ['Имя клиента', 'Номер телефона', 'Поломка']
     ]
     markup = ReplyKeyboardMarkup(keyboard, one_time_keyboard=True)
     update.message.reply_text(text='Где ошибка?', reply_markup=markup)
@@ -88,6 +88,8 @@ def category_mistake(update: Update, context: CallbackContext) -> int:
 def search_repair(update: Update, context: CallbackContext) -> str:
     if save_data_to_another_table(update.message.text):
         update.message.reply_text("Спасибо. Ремонт был перемещён в завершённые.")
+    else:
+        update.message.reply_text("Что-то пошло не так. Попробуй ещё раз\nВведи команду /start.")
     return ConversationHandler.END
 
 
@@ -100,7 +102,7 @@ def correction_info(update: Update, context: CallbackContext) -> int:
 
 def main(user_limit: list) -> None:
     updater = Updater(Token)
-    add = updater.dispatcher.add_handler  # TODO: Если ввёл не значение dd.dd.dd.dd - выдать ошибку
+    add = updater.dispatcher.add_handler  # TODO: Если ввёл не значение dddddddd - выдать ошибку
     gather_info_customer = ConversationHandler(
         entry_points=[CommandHandler('start', start, Filters.user(user_limit))],
         states={
