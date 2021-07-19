@@ -141,5 +141,5 @@ def main(user_limit: list) -> None:
 
 
 if __name__ == '__main__':
-    user_list = [669528071, 470529631]  # TODO: Собрать Chat_ID и добавить
+    user_list = ['SOME_CHAT_ID_0', 'SOME_CHAT_ID_1']  # TODO: Собрать Chat_ID и добавить
     main(user_list)

@@ -62,8 +62,8 @@ def create_word(repair_num: str, user_data: dict) -> str:
     test = Document('Template_Customer.docx')
     file_name_doc = repair_num + "_" + user_data['Имя клиента'] + '.docx'
     users_dict = {
-            470529631: ' Anatoly Tarakanovskiy',
-            669528071: ' Gleb Kuristik'
+            'SOME_CHAT_ID_0': ' SOME_NAME',
+            'SOME_CHAT_ID_1': ' SOME_NAME'
     }
     dict_customer = {
         1: f'Remondi vastuvõtmise kviitung nr {repair_num}, kuupäev {repair_num[:-2]}',
